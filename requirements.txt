@@ -1,0 +1,7 @@
+requests==2.18.4
+Flask==0.10.1
+pusher==2.0.1
+dialogflow==0.4.0
+Credentials==1.1
+EventManager==0.7
+python_dateutil==2.7.3
