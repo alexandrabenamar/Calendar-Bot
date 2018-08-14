@@ -19,7 +19,7 @@ Install the set of dependencies : <br />
 ```
 pip install -r requirements.txt
 ```
-### To execute ...
+### Code execution
 
 Use a secure tunnel to localhost webhook development tool and debugging tool. I personnaly use ngrok : <br />
 ```
