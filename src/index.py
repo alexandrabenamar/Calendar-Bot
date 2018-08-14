@@ -1,4 +1,5 @@
-# /index.py
+##!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from flask import Flask, request, jsonify, render_template, make_response
 import os
@@ -9,10 +10,8 @@ import pusher
 from Credentials import getCredentials
 from EventManager import *
 from CalendarManager import *
-import uuid
-import string
-import random
-from datetime import datetime
+import uuid, string, random
+import dateutil.parser
 
 
 app = Flask(__name__)
@@ -29,7 +28,6 @@ pusher_client = pusher.Pusher(
 def index():
     return render_template('index.html')
 
-
 def webHoookResult(req):
 
     result = req.get("result")
@@ -39,15 +37,11 @@ def webHoookResult(req):
         params = result.get("parameters")
         if len(params) == 0:
             return ([],None)
-        date = params.get('date')
-        SCOPES = 'https://www.googleapis.com/auth/calendar'
-        CREDENTIAL_PATH = './credentials/client_secret.json'
-        credentials = getCredentials(CREDENTIAL_PATH) #insert your client_secret.json file path
-        service = build('calendar', 'v3', http=credentials.authorize(Http()))
+        service = createService()
         now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
         response=getUpcomingEvents(service, now)
         reply = {
-            "fulfillmentText": response,
+            "speech": response,
         }
         return jsonify(reply)
 
@@ -55,36 +49,32 @@ def webHoookResult(req):
         params = result.get("parameters")
         if len(params) == 0:
             return ([],None)
-        date = params.get('date')
+
+        time = params.get('time-period')
         geo = params.get('geo-city')
         personne = params.get('last-name')
-        SCOPES = 'https://www.googleapis.com/auth/calendar'
-        CREDENTIAL_PATH = './credentials/client_secret.json'
-        credentials = getCredentials(CREDENTIAL_PATH) #insert your client_secret.json file path
-        service = build('calendar', 'v3', http=credentials.authorize(Http()))
+        service = createService()
         summary = "Rendez-vous avec "+personne
 
-        GMT_OFF = '+02:00'
+        d_start = time.split('/')[0]
+        d_start = time.split('/')[1]
+
         event = {
             "summary": summary,
             "location": geo,
-            'start':   {'dateTime': '2018-08-14T09:00:00%s' % GMT_OFF},
-            'end':     {'dateTime': '2018-08-14T17:00:00%s' % GMT_OFF},
+            'start':   {'dateTime': d_start, "timeZone": "Europe/Paris"},
+            'end':     {'dateTime': d_end, "timeZone": "Europe/Paris"},
         }
-        response=addEvent(service, event)
-        reply = {
-            "fulfillmentText": response,
-        }
-        return jsonify(reply)
-
-    else:
-        return ([],None)
+        addEvent(service, event)
 
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True,force=True)
     res = webHoookResult(req)
+    if (res!=None):
+        return res
+    res = json.dumps(res, indent=4)
     r = make_response(res)
     r.headers['Content-type'] = 'application/json'
     return r
@@ -116,6 +106,5 @@ def send_message():
     return jsonify(response_text)
 
 
-# run Flask app
 if __name__ == "__main__":
     app.run(debug=True)
