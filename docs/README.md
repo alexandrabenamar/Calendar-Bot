@@ -18,7 +18,6 @@ https://github.com/alexandrabenamar/GoogleCalendarManager
 Install the set of dependencies : <br />
 ```
 pip install -r requirements.txt
-
 ```
 
 ## Description
