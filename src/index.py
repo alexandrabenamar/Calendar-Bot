@@ -17,10 +17,10 @@ import dateutil.parser
 app = Flask(__name__)
 
 pusher_client = pusher.Pusher(
-  app_id='577057',
-  key='c6e47f1a8cdf65a93c8e',
-  secret='e4a72ba63936c2436523',
-  cluster='eu',
+  app_id=APP_ID,
+  key=KEY,
+  secret=SECRET,
+  cluster=CLUSTER,
   ssl=True
 )
 
