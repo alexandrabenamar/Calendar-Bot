@@ -38,8 +38,10 @@ def webHoookResult(req):
         if len(params) == 0:
             return ([],None)
         service = createService()
-        now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-        response=getUpcomingEvents(service, now)
+        date = params.get('date')
+        time=str(date)+"T00:00:01Z"
+
+        response=getUpcomingEvents(service, time)
         reply = {
             "speech": response,
         }
@@ -50,14 +52,18 @@ def webHoookResult(req):
         if len(params) == 0:
             return ([],None)
 
-        time = params.get('time-period')
+        date = params.get('date')
+        time = params.get('time')
         geo = params.get('geo-city')
-        personne = params.get('last-name')
+        person = params.get('last-name')
         service = createService()
-        summary = "Rendez-vous avec "+personne
+        summary = "Meeting with "+person
 
-        d_start = time.split('/')[0]
-        d_start = time.split('/')[1]
+        t_start = time.split('/')[0]
+        t_end = time.split('/')[1]
+
+        d_start=str(date[0])+"T"+str(t_start)
+        d_end=str(date[0])+"T"+str(t_end)
 
         event = {
             "summary": summary,
