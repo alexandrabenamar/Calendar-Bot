@@ -52,16 +52,17 @@ def webHoookResult(req):
         if len(params) == 0:
             return ([],None)
 
-        date = params.get('date')
-        time = params.get('time')
-        geo = params.get('geo-city')
-        person = params.get('last-name')
+        date = params.get('date')          #dialogflow format : @sys.date
+        time = params.get('time')          #dialogflow format : @sys.time-period
+        geo = params.get('geo-city')       #dialogflow format : @sys.geo-city
+        person = params.get('last-name')   #dialogflow format : @sys.any
         service = createService()
         summary = "Meeting with "+person
 
         t_start = time.split('/')[0]
         t_end = time.split('/')[1]
 
+        # converting into ISO-8601 format
         d_start=str(date[0])+"T"+str(t_start)
         d_end=str(date[0])+"T"+str(t_end)
 
