@@ -18,14 +18,29 @@ https://github.com/alexandrabenamar/GoogleCalendarManager
 Install the set of dependencies : <br />
 ```
 pip install -r requirements.txt
+```
+## Execution
 
+Use a secure tunnel to localhost webhook development tool and debugging tool. I personnaly use ngrok : <br />
+```
+ngrok http localhost:5000
 ```
 
-## Description
+Start a virtual environment in your project path (for MacOs and Linux) : 
 
-Coming soon ... <br />
+```
+python3 -m venv env
+source env/bin/activate
+```
+
+Run Flask web app : <br />
+```
+flask run
+```
+
+Go to http://127.0.0.1:5000 to run your app
 
 
-## Authors
+## Author
 
 Alexandra Benamar
