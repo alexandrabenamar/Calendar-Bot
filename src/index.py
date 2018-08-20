@@ -13,9 +13,10 @@ from CalendarManager import *
 import uuid, string, random
 import dateutil.parser
 
-
+# your flask web app
 app = Flask(__name__)
 
+# Enter your pusher app informations
 pusher_client = pusher.Pusher(
   app_id=APP_ID,
   key=KEY,
@@ -26,9 +27,15 @@ pusher_client = pusher.Pusher(
 
 @app.route('/')
 def index():
+    """
+        Main function of the web app
+    """
     return render_template('index.html')
 
 def webHoookResult(req):
+    """
+        Execute the action for the user.
+    """
 
     result = req.get("result")
     action = result.get('action')
@@ -38,7 +45,7 @@ def webHoookResult(req):
         if len(params) == 0:
             return ([],None)
         service = createService()
-        date = params.get('date')
+        date = params.get('date')       ##dialogflow format : @sys.date
         time=str(date)+"T00:00:01Z"
 
         response=getUpcomingEvents(service, time)
@@ -62,10 +69,11 @@ def webHoookResult(req):
         t_start = time.split('/')[0]
         t_end = time.split('/')[1]
 
-        # converting into ISO-8601 format
+        # converting into ISO-8601gi format
         d_start=str(date[0])+"T"+str(t_start)
         d_end=str(date[0])+"T"+str(t_end)
 
+        # creating the event
         event = {
             "summary": summary,
             "location": geo,
@@ -77,12 +85,16 @@ def webHoookResult(req):
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
+    """
+        Function triggered by dialogflow API.
+        Create the response for the user.
+    """
     req = request.get_json(silent=True,force=True)
-    res = webHoookResult(req)
-    if (res!=None):
-        return res
+    res = webHoookResult(req)           # complete the action
+    if (res!=None):                     # if there is a specific response for the action
+        return res                      # then return the response
     res = json.dumps(res, indent=4)
-    r = make_response(res)
+    r = make_response(res)              # else search for the default response
     r.headers['Content-type'] = 'application/json'
     return r
 
