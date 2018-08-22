@@ -13,6 +13,11 @@ Operating System : MacOS High Sierra.
 The code to handle Google Calendar API is available here : <br />
 https://github.com/alexandrabenamar/GoogleCalendarManager
 
+### Google Drive API
+
+The code to handle Google Drive API is available here : <br />
+https://github.com/alexandrabenamar/GoogleDriveManager
+
 ### Libraries
 
 Install the set of dependencies : <br />
