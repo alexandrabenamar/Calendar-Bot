@@ -10,32 +10,26 @@ import pusher
 from Credentials import getCredentials
 from EventManager import *
 from CalendarManager import *
+from drive import drive_credentials, search_file
 import uuid, string, random
+import datetime
 import dateutil.parser
 
-# your flask web app
 app = Flask(__name__)
 
-# Enter your pusher app informations
 pusher_client = pusher.Pusher(
-  app_id=APP_ID,
-  key=KEY,
-  secret=SECRET,
-  cluster=CLUSTER,
+  app_id='577057',
+  key='c6e47f1a8cdf65a93c8e',
+  secret='e4a72ba63936c2436523',
+  cluster='eu',
   ssl=True
 )
 
 @app.route('/')
 def index():
-    """
-        Main function of the web app
-    """
     return render_template('index.html')
 
 def webHoookResult(req):
-    """
-        Execute the action for the user.
-    """
 
     result = req.get("result")
     action = result.get('action')
@@ -44,11 +38,11 @@ def webHoookResult(req):
         params = result.get("parameters")
         if len(params) == 0:
             return ([],None)
-        service = createService()
-        date = params.get('date')       ##dialogflow format : @sys.date
+        calendar_service = createService()
+        date = params.get('date')
         time=str(date)+"T00:00:01Z"
 
-        response=getUpcomingEvents(service, time)
+        response=getUpcomingEvents(calendar_service, time)
         reply = {
             "speech": response,
         }
@@ -59,43 +53,46 @@ def webHoookResult(req):
         if len(params) == 0:
             return ([],None)
 
-        date = params.get('date')          #dialogflow format : @sys.date
-        time = params.get('time')          #dialogflow format : @sys.time-period
-        geo = params.get('geo-city')       #dialogflow format : @sys.geo-city
-        person = params.get('last-name')   #dialogflow format : @sys.any
-        service = createService()
-        summary = "Meeting with "+person
+        date = params.get('date')
+        time = params.get('time')
+        geo = params.get('geo-city')
+        person = params.get('name')
+        calendar_service = createService()
+        summary = "Rendez-vous avec "+person
 
         t_start = time.split('/')[0]
         t_end = time.split('/')[1]
 
-        # converting into ISO-8601gi format
         d_start=str(date[0])+"T"+str(t_start)
         d_end=str(date[0])+"T"+str(t_end)
 
-        # creating the event
         event = {
             "summary": summary,
             "location": geo,
             'start':   {'dateTime': d_start, "timeZone": "Europe/Paris"},
             'end':     {'dateTime': d_end, "timeZone": "Europe/Paris"},
         }
-        addEvent(service, event)
+        addEvent(calendar_service, event)
+
+    elif action == "open_drive":
+        params = result.get("parameters")
+        if len(params) == 0:
+            return ([],None)
+
+        file = params.get('file-name')
+        drive_service=drive_credentials()
+        search_file(drive_service, file)
 
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    """
-        Function triggered by dialogflow API.
-        Create the response for the user.
-    """
     req = request.get_json(silent=True,force=True)
-    res = webHoookResult(req)           # complete the action
-    if (res!=None):                     # if there is a specific response for the action
-        return res                      # then return the response
+    res = webHoookResult(req)
+    if (res!=None):
+        return res
     res = json.dumps(res, indent=4)
-    r = make_response(res)              # else search for the default response
-    r.headers['Content-type'] = 'application/json'
+    r = make_response(res)
+    r.headers['Content-Type'] = 'application/json'
     return r
 
 
@@ -125,5 +122,6 @@ def send_message():
     return jsonify(response_text)
 
 
+# run Flask app
 if __name__ == "__main__":
     app.run(debug=True)
