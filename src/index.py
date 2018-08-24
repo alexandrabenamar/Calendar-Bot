@@ -10,7 +10,7 @@ import pusher
 from Credentials import getCredentials
 from EventManager import *
 from CalendarManager import *
-from drive import drive_credentials, search_file
+from drive import drive_credentials, search_file, open_file
 import uuid, string, random
 import datetime
 import dateutil.parser
@@ -81,7 +81,11 @@ def webHoookResult(req):
 
         file = params.get('file-name')
         drive_service=drive_credentials()
-        search_file(drive_service, file)
+        response=open_file(drive_service, file)
+        reply = {
+            "speech": response,
+        }
+        return jsonify(reply)
 
 
 @app.route('/webhook', methods=['POST'])
