@@ -2,7 +2,7 @@ httplib2==0.11.3
 pusher==2.0.1
 newsapi_python==0.2.3
 dialogflow==0.4.0
-Flask==0.10.1
+Flask==0.12.3
 requests==2.18.4
 python_dateutil==2.7.3
 google_api_python_client==1.7.4
