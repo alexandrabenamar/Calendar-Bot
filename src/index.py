@@ -7,10 +7,13 @@ import dialogflow
 import requests
 import json
 import pusher
+
 from Credentials import getCredentials
 from EventManager import *
 from CalendarManager import *
 from drive import drive_credentials, search_file, open_file
+from research import google_search, youtube_search, news_search
+
 import uuid, string, random
 import datetime
 import dateutil.parser
@@ -82,6 +85,33 @@ def webHoookResult(req):
         file = params.get('file-name')
         drive_service=drive_credentials()
         response=open_file(drive_service, file)
+        reply = {
+            "speech": response,
+        }
+        return jsonify(reply)
+
+    elif action == "google-search":
+        params = result.get("parameters")
+        if len(params) == 0:
+            return ([],None)
+
+        query = params.get('query')
+        google_search(query)
+
+    elif action == "youtube-search":
+        params = result.get("parameters")
+        if len(params) == 0:
+            return ([],None)
+
+        query = params.get('query')
+        youtube_search(query)
+
+    elif action == "news-search":
+        params = result.get("parameters")
+        if len(params) == 0:
+            return ([],None)
+
+        response=news_search()
         reply = {
             "speech": response,
         }
