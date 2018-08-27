@@ -32,11 +32,27 @@ Use a secure tunnel to localhost webhook development tool and debugging tool. I 
 ngrok http localhost:5000
 ```
 
-Start a virtual environment in your project path (for MacOs and Linux) : 
-
+Create a virtual environment in your project path using : <br />
 ```
 python3 -m venv env
+```
+or : <br />
+```
+python -m venv env
+```
+
+### MacOs or Linux
+
+Activate the virtual environment : <br />
+```
 source env/bin/activate
+```
+
+### Windows
+
+Activate the virtual environment : <br />
+```
+env/Scripts/activate
 ```
 
 Run Flask web app : <br />
