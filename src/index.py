@@ -2,16 +2,15 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, request, jsonify, render_template, make_response
-import os
+import json, os, re
 import dialogflow
 import requests
-import json
 import pusher
 
 from Credentials import getCredentials
 from EventManager import *
 from CalendarManager import *
-from drive import drive_credentials, search_file, open_file
+from drive import drive_credentials, search_file, open_file, share_file
 from research import google_search, youtube_search, news_search
 
 import uuid, string, random
@@ -36,6 +35,8 @@ def webHoookResult(req):
 
     result = req.get("result")
     action = result.get('action')
+
+    ################## GOOGLE CALENDAR ACTIONS ##################
 
     if action == 'get_events':
         params = result.get("parameters")
@@ -77,6 +78,8 @@ def webHoookResult(req):
         }
         addEvent(calendar_service, event)
 
+    ################## GOOGLE DRIVE ACTIONS ##################
+
     elif action == "open_drive":
         params = result.get("parameters")
         if len(params) == 0:
@@ -89,6 +92,33 @@ def webHoookResult(req):
             "speech": response,
         }
         return jsonify(reply)
+
+    elif action == "share-drive":
+        params = result.get("parameters")
+        if len(params) == 0:
+            return ([],None)
+
+        file_name = params.get('file-name')
+        email = params.get('user-email')
+        option = str(params.get('option'))
+
+        if option=="lecture":
+            role="reader"
+        elif re.search(r'criture', option):
+            role="writer"
+        elif re.search(r'propri', option):
+            role="owner"
+        else:
+            response="Je n'ai pas compris les droits que vous souhaitez accorder."
+            reply = {
+                "speech": response,
+            }
+            return jsonify(reply)
+
+        drive_service=drive_credentials()
+        share_file(drive_service, file_name, email, role)
+
+    ################## RESEARCH ACTIONS ##################
 
     elif action == "google-search":
         params = result.get("parameters")
