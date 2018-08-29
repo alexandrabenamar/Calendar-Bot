@@ -1,5 +1,5 @@
 # Eliza-Bot
-Eliza helps you check and modify your Google Calendar, Google Drive and do a research on Google or Youtube.
+Eliza helps you handle your Google Calendar and Google Drive and also research queries on Google or Youtube.
 This project was created using Dialogflow, Flask and Pusher.
 
 ## Implementation
