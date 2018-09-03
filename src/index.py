@@ -19,6 +19,7 @@ import dateutil.parser
 
 app = Flask(__name__)
 
+# ENTER YOUR PUSHER INFORMATIONS
 pusher_client = pusher.Pusher(
   app_id=APP_ID,
   key=KEY,
@@ -116,7 +117,13 @@ def webHoookResult(req):
             return jsonify(reply)
 
         drive_service=drive_credentials()
-        share_file(drive_service, file_name, email, role)
+        user_error=share_file(drive_service, file_name, email, role)
+        if error!=None:
+            reply = {
+                "speech": user_error,
+            }
+            return jsonify(reply)
+
 
     ################## RESEARCH ACTIONS ##################
 
@@ -186,6 +193,5 @@ def send_message():
     return jsonify(response_text)
 
 
-# run Flask app
 if __name__ == "__main__":
     app.run(debug=True)
