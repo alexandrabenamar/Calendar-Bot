@@ -41,14 +41,14 @@ or : <br />
 python -m venv env
 ```
 
-### MacOs or Linux
+#### MacOs or Linux
 
 Activate the virtual environment : <br />
 ```
 source env/bin/activate
 ```
 
-### Windows
+#### Windows
 
 Activate the virtual environment : <br />
 ```
