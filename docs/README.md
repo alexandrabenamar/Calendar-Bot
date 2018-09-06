@@ -12,6 +12,13 @@ Operating System : MacOS High Sierra.
 
 ## Getting Started
 
+### Libraries
+
+Install the set of dependencies : <br />
+```
+pip install -r requirements.txt
+```
+
 ### Google Calendar API
 
 The code to handle Google Calendar API is available here : <br />
@@ -22,17 +29,15 @@ https://github.com/alexandrabenamar/GoogleCalendarManager
 The code to handle Google Drive API is available here : <br />
 https://github.com/alexandrabenamar/GoogleDriveManager
 
-### Libraries
-
-Install the set of dependencies : <br />
-```
-pip install -r requirements.txt
-```
-
 ### Get your Pusher API Key
 
 Create a free account on Pusher (https://pusher.com/channels). Then create a new app and write dows your app_id,
 key, secret and cluster. You'll need Pusher Channels to add real-time funtionnalities to your bot.
+
+### News API
+
+News API is a simple and easy-to-use API that returns JSON metadata for headlines and articles live all over the web right now. Get your API-key to add the functionnality to your bot (https://newsapi.org/docs/get-started).
+
 
 ## Execution
 
