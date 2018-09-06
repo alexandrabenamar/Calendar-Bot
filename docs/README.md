@@ -33,6 +33,8 @@ key, secret and cluster. You'll need Pusher Channels to add real-time funtionnal
 
 ## Execution
 
+### Setup a virtual environment
+
 Use a secure tunnel to localhost webhook development tool and debugging tool. I personnaly use ngrok : <br />
 ```
 ngrok http localhost:5000
@@ -47,7 +49,7 @@ or : <br />
 python -m venv env
 ```
 
-#### MacOs or Linux
+##### MacOs or Linux
 
 Activate the virtual environment : <br />
 ```
@@ -60,6 +62,8 @@ Activate the virtual environment : <br />
 ```
 env/Scripts/activate
 ```
+
+### Run your app
 
 Run Flask web app : <br />
 ```
