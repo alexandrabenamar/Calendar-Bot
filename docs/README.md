@@ -1,5 +1,8 @@
-# Eliza-Bot
+# Eliza
 Eliza helps you handle your Google Calendar and Google Drive and also research queries on Google or Youtube.
+
+Eliza was created to handle your Google account by adding or researching for events in your calendar, research, open and share a google drive file and make research on Google or YouTube. This assistant also allows you to check on the last news in innovation and technologies. Moreover, Eliza can also handle small talk dialog and discuss with its user.
+
 This project was created using Dialogflow, Flask and Pusher.
 
 ## Implementation
