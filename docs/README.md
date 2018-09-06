@@ -25,6 +25,12 @@ Install the set of dependencies : <br />
 ```
 pip install -r requirements.txt
 ```
+
+### Get your Pusher API Key
+
+Create a free account on Pusher (https://pusher.com/channels). Then create a new app and write dows your app_id,
+key, secret and cluster. You'll need Pusher Channels to add real-time funtionnalities to your bot.
+
 ## Execution
 
 Use a secure tunnel to localhost webhook development tool and debugging tool. I personnaly use ngrok : <br />
